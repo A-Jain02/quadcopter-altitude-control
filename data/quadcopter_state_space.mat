@@ -1,0 +1,43 @@
+% quadcopter_state_space.m
+
+% Constants (simplified quadcopter parameters)
+g = 9.81;    % gravity (m/s^2)
+m = 1.0;     % mass (kg)
+Ixx = 0.02;  % moment of inertia
+Iyy = 0.02;
+Izz = 0.04;
+
+% State vector: [x; y; z; vx; vy; vz; phi; theta; psi; p; q; r]
+% Input vector: [U1; U2; U3; U4] (thrust and torques)
+
+A = zeros(12);  % System matrix (simplified linearized at hover)
+
+% Gravity affects vertical acceleration
+A(4,7) = g;  % vx affected by roll
+A(5,8) = -g; % vy affected by pitch
+
+% Velocity updates from acceleration
+A(1,4) = 1;
+A(2,5) = 1;
+A(3,6) = 1;
+
+% Orientation updates from angular velocities
+A(7,10) = 1;
+A(8,11) = 1;
+A(9,12) = 1;
+
+% Input matrix B (maps control inputs to accelerations)
+B = zeros(12,4);
+B(6,1) = 1/m;           % vertical thrust (U1)
+B(10,2) = 1/Ixx;        % roll torque (U2)
+B(11,3) = 1/Iyy;        % pitch torque (U3)
+B(12,4) = 1/Izz;        % yaw torque (U4)
+
+C = eye(12); % Full state measurement
+D = zeros(12,4);
+
+% Create the state-space system
+quad_sys = ss(A, B, C, D);
+
+% Save the system
+save('quadcopter_sys.mat', 'quad_sys');
