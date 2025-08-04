@@ -1,0 +1,28 @@
+%% 🧠 Quadcopter Control System Simulation
+
+% This script simulates a quadcopter using PID controllers for 6-DOF control,
+% and estimates states using an Extended Kalman Filter (EKF).
+% Written for MathWorks application project.
+
+%% 1. Define Quadcopter Dynamics
+
+run('quadcopter_state_space.m');  % Loads A, B matrices
+
+%% 2. Altitude Control using PID
+
+run('pid_altitude_control.m');    % Controls z using PID
+
+%% 3. Full Position + Attitude Control
+
+run('pid_position_control.m');    % Controls x, y, z, roll, pitch, yaw
+
+%% 4. EKF-Based State Estimation
+
+run('ekf_state_estimation.m');    % Simulated IMU + GPS → EKF filtering
+
+%% ✅ Summary
+
+% - System simulated in full 12-state dynamics
+% - Nested PID successfully tracks 3D reference positions
+% - EKF handles noisy sensor fusion and state estimation
+% - Suitable for drone trajectory control and estimation tasks
