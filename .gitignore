@@ -1,0 +1,11 @@
+
+---
+
+## 🔒 .gitignore (for MATLAB Projects)
+
+```gitignore
+*.asv
+*.m~
+*.mlx~
+*.mat
+.DS_Store
